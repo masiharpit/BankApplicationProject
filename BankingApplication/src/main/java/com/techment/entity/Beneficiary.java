@@ -1,13 +1,16 @@
 package com.techment.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "beneficiary")
+@Table(name = "beneficiary5")
 
 public class Beneficiary {
 
@@ -18,6 +21,10 @@ public class Beneficiary {
 	private long beneficiaryAccNumber;
 	private String beneficiaryIfsc;
 //	private AccountType accountType ;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "accountId")
+	private Account account;
 
 	public String getBeneficiaryName() {
 		return beneficiaryName;

@@ -1,4 +1,4 @@
-package com.techment.bank.dto;
+package com.techment.dto;
 
 
 public class NomineeDto {

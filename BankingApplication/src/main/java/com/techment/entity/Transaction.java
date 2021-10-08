@@ -5,17 +5,19 @@ import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Transaction")
+@Table(name="Transaction5")
 public class Transaction {
 
 	@Id
 	private long transaction_id;
-//	@ManyToOne(cascade=CascadeType.ALL)
-//	private Account account;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="accountId", referencedColumnName = "accountId")
+	private Account account;
 	private double amount;
 	enum transactionType{};
 	LocalDate transactionDateAndTime;

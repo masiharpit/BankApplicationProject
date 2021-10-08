@@ -7,5 +7,5 @@ import com.techment.entity.Account;
 
 public interface AccountDao extends JpaRepository<Account, Integer> {
 
-	AccountDto findByAccountId(long accountId);
+	Account findByAccountId(long accountId);
 }

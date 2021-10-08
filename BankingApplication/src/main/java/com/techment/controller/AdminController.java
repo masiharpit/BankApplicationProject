@@ -1,4 +1,4 @@
-package com.techment.Controller;
+package com.techment.controller;
 
 
 
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.techment.Entity.Admin;
-import com.techment.Service.AdminService;
+import com.techment.entity.Admin;
+import com.techment.service.AdminService;
 @Controller
 public class AdminController {
 	

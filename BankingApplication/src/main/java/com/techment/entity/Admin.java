@@ -1,4 +1,4 @@
-package com.techment.Entity;
+package com.techment.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,9 +8,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Admin")
+@Table(name="Admin5")
 public class Admin {
-	@OneToOne
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	 Long adminId;

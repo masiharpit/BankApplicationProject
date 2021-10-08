@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techment.dto.CustomerDto;
 import com.techment.entity.Customer;
-import com.techment.service.CustomerService;
+import com.techment.service.ICustomerService;
 
 @RestController
 @RequestMapping(value = "/customer")
 public class CustomerController {
 		
            @Autowired	
-           private CustomerService service;
+           private ICustomerService service;
            
            @GetMapping(value = "/viewCustomerDetails")
           public Customer viewCustomerDetails(long customer_id)

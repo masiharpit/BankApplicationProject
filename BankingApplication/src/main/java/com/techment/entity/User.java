@@ -1,20 +1,26 @@
-package com.techment.Entity;
+package com.techment.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="User")
+@Table(name="User5")
 public class User {
-	@OneToOne
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	 Long userId;
-	 String password;	
+	private Long userId;
+	private String password;	
+	 
+	 @OneToOne(cascade=CascadeType.ALL)
+		@JoinColumn(name="adminId", referencedColumnName = "adminId")
+	 private Admin admin;
 	
 		public User(Long userId, String password) {
 		super();

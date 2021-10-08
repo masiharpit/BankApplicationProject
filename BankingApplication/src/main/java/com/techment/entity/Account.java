@@ -1,15 +1,18 @@
 package com.techment.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="account")
+@Table(name="account5")
 public class Account {
 	
 	@Id
@@ -23,6 +26,13 @@ public class Account {
 	
 	@Column(name="date_Of_Opening")
 	LocalDate dateOfOpening;
+	
+//@OneToMany(mappedBy = "nomineeId",cascade=CascadeType.ALL)
+//	@JoinColumn(name = "nomineeId")
+//	List<Nominee> nominee; 
+	
+	@OneToMany(mappedBy = "beneficiaryId",cascade=CascadeType.ALL)
+	List<Beneficiary> beneficiary; 
 	
 	public long getAccountId() {
 		return accountId;

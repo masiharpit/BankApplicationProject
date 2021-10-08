@@ -1,13 +1,17 @@
-package com.techment.bank.entity;
+package com.techment.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="nominee")
+@Table(name="nominee5")
 
 public class Nominee {
 	
@@ -22,6 +26,10 @@ public class Nominee {
 	private String phoneNo;
 	private enum Relation{Father,Mother,Husband,Wife};
 	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "accountId")
+	private Account account;
+
 	
 	public Nominee() {
 		super();

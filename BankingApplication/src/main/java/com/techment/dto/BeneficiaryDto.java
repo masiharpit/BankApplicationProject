@@ -1,6 +1,5 @@
 package com.techment.dto;
 
-import com.techment.entity.AccountType;
 
 public class BeneficiaryDto {
 

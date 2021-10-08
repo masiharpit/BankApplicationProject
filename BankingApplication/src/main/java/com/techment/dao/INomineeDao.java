@@ -1,9 +1,9 @@
-package com.techment.bank.dao;
+package com.techment.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.techment.bank.dto.NomineeDto;
-import com.techment.bank.entity.Nominee;
+import com.techment.dto.NomineeDto;
+import com.techment.entity.Nominee;
 
 public interface INomineeDao extends JpaRepository<Nominee, Integer>{
 
