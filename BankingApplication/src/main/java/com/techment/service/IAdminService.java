@@ -1,9 +1,9 @@
-package com.techment.Service;
+package com.techment.service;
 
 import java.util.List;
 
-import com.techment.Entity.Admin;
-import com.techment.dto.Admindto;
+import com.techment.dto.AdminDto;
+import com.techment.entity.Admin;
 
 public interface IAdminService {
 
@@ -11,10 +11,11 @@ public interface IAdminService {
 	List<Admin> ViewAllAdmins();
 	String AddAdmin(Admin admin);
 	String DelAdmin(Admin admin);
-	String AddAdmin(Admindto admin);
-	Admin getAdminById(long id);
-	String deleteAdminById(long id);
-	String updateAdmin(long id, Admindto admin);
 	
-	
+	//////////
+	AdminDto findAdminById(long adminId);
+	List<AdminDto> listAllAdmins();
+	boolean removeAdmin( long adminId);
+	AdminDto addAdmin(AdminDto adminDto);
+	AdminDto updateAdmin(AdminDto adminDto );
 }
