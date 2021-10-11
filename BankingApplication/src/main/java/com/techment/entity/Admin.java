@@ -1,62 +1,83 @@
-package com.techment.Entity;
+package com.techment.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Admin")
+@Table(name="Admin5")
 public class Admin {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	 Long id;
-	 String name;
-	 String contact;
-	 String email;
-	 
-	 
+	private  long adminId;
+	private String adminName;
+	private String adminContact;
+	private String adminEmailId;
+	
 	public Admin() {
 		super();
 	}
-	public Admin(Long id, String name, String contact, String email) {
+
+	public Admin(long adminId, String adminName, String adminContact, String adminEmailId) {
 		super();
-		this.id = id;
-		this.name = name;
-		this.contact = contact;
-		this.email = email;
+		this.adminId = adminId;
+		this.adminName = adminName;
+		this.adminContact = adminContact;
+		this.adminEmailId = adminEmailId;
 	}
-	public Long getId() {
-		return id;
+
+
+	public long getAdminId() {
+		return adminId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+    public void setAdminId(long adminId) {
+		this.adminId = adminId;
 	}
-	public String getName() {
-		return name;
+
+
+
+	public String getAdminName() {
+		return adminName;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+
+
+	public void setAdminName(String adminName) {
+		this.adminName = adminName;
 	}
-	public String getContact() {
-		return contact;
+
+
+
+	public String getAdminContact() {
+		return adminContact;
 	}
-	public void setContact(String contact) {
-		this.contact = contact;
+
+
+
+	public void setAdminContact(String adminContact) {
+		this.adminContact = adminContact;
 	}
-	public String getEmail() {
-		return email;
+
+
+
+	public String getAdminEmailId() {
+		return adminEmailId;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+
+
+
+	public void setAdminEmailId(String adminEmailId) {
+		this.adminEmailId = adminEmailId;
 	}
-	public void setStatus(String string) {
-		// TODO Auto-generated method stub
-		
-	}
-	 
+
+	
+	
+	
 	
 	
 }
