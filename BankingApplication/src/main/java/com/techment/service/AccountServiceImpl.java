@@ -1,51 +1,118 @@
 package com.techment.service;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techment.dao.AccountDao;
+import com.techment.dao.ITransactionDao;
 import com.techment.dto.AccountDto;
+import com.techment.dto.TransactionDto;
 import com.techment.entity.Account;
 
 @Service
 public class AccountServiceImpl implements IAccountService{
 
 	@Autowired
-	AccountDao dao;
+	AccountDao Accountdao;
+	
+	ITransactionDao transactionDao;
 	
 	@Override
-	public AccountDto transferMoney(long senderAccountId, long receiverAccountId, double amount, String username,
+	public TransactionDto transferMoney(long senderAccountId, long receiverAccountId, double amount, String username,
 			String password) {
-		Account account=dao.findByAccountId(senderAccountId);
-		account.setBalance(account.getBalance()+amount);
-		dao.save(account);
 		
-		AccountDto accountDto=new AccountDto(account.getAccountId(),account.getInterestRate(),account.getBalance(),account.getDateOfOpening());
-		return accountDto;
+		Account senderaccount=Accountdao.findByAccountId(senderAccountId);
+		Account receiveraccount=Accountdao.findByAccountId(receiverAccountId);
+		TransactionDto transactionDto = new TransactionDto();
+		LocalDate transactionDateAndTime = null;
+		
+		if(senderaccount.getBalance()>=amount) 
+		{
+		receiveraccount.setBalance(receiveraccount.getBalance()+amount);
+		senderaccount.setBalance(senderaccount.getBalance()-amount);
+		Accountdao.save(senderaccount);
+		Accountdao.save(receiveraccount);
+		
+		transactionDto.setTransaction_id(UUID.randomUUID().toString());
+		transactionDto.setAccount_id(senderaccount.getAccountId());
+		transactionDto.setAmount(amount);
+		transactionDto.setTransactionDateAndTime(transactionDateAndTime.now());
+		transactionDto.setBankAccount(receiveraccount);
+		transactionDto.setTransactionRemarks("Successfully Transfered");
+		
+		}
+		
+		else {
+			transactionDto.setTransaction_id(null);
+			transactionDto.setAccount_id(senderaccount.getAccountId());
+			transactionDto.setAmount(amount);
+			transactionDto.setTransactionDateAndTime(transactionDateAndTime.now());
+			transactionDto.setBankAccount(receiveraccount);
+			transactionDto.setTransactionRemarks("Failed transaction");
+			
+		}
+		
+		return transactionDto;
 	}
 	@Override
-	public AccountDto withdraw(long accountId, String username, String password, double amount) {
+	public TransactionDto withdraw(long accountId, String username, String password, double amount) {
 		
-		Account account = new Account();
+		Account account =Accountdao.findByAccountId(accountId);
+		TransactionDto transactionDto = new TransactionDto();
+		LocalDate transactionDateAndTime = null;
 		
-		if(account.getBalance()>amount)
+		if(account.getBalance()>amount) {
 		account.setBalance(account.getBalance()-amount);
-		dao.save(account);
+		Accountdao.save(account);
 		
+		transactionDto.setTransaction_id(UUID.randomUUID().toString());
+		transactionDto.setAccount_id(account.getAccountId());
+		transactionDto.setAmount(amount);
+		transactionDto.setTransactionDateAndTime(transactionDateAndTime.now());
+		transactionDto.setBankAccount(account);
+		transactionDto.setTransactionRemarks("Successfully Transfered");
+		}
+		
+		else {
+			transactionDto.setTransaction_id(null);
+			transactionDto.setAccount_id(account.getAccountId());
+			transactionDto.setAmount(amount);
+			transactionDto.setTransactionDateAndTime(transactionDateAndTime.now());
+			transactionDto.setBankAccount(account);
+			transactionDto.setTransactionRemarks("Failed transaction");
+			
+		}
+		
+		return transactionDto;
+	}
+	
+	@Override
+	public TransactionDto deposit(long accountId, double amount) {
+		
+		Account account = Accountdao.findByAccountId(accountId);
+		TransactionDto transactionDto = new TransactionDto();
+		LocalDate transactionDateAndTime = null;
+		
+		account.setBalance(account.getBalance()+amount);
+		Accountdao.save(account);
+		
+		transactionDto.setTransaction_id(UUID.randomUUID().toString());
+		transactionDto.setAccount_id(account.getAccountId());
+		transactionDto.setAmount(amount);
+		transactionDto.setTransactionDateAndTime(transactionDateAndTime.now());
+		transactionDto.setBankAccount(account);
+		transactionDto.setTransactionRemarks("Successfully Transfered");
+		return transactionDto;
+	}
+	
+	@Override
+	public AccountDto findAccountById(long accountId) {
+		Account account = Accountdao.findByAccountId(accountId);
 		AccountDto accountDto=new AccountDto(account.getAccountId(),account.getInterestRate(),account.getBalance(),account.getDateOfOpening());
 		return accountDto;
 	}
 	
-	@Override
-	public AccountDto deposite(long accountId, double amount) {
-		
-		Account account = dao.findByAccountId(accountId);
-		account.setBalance(account.getBalance()+amount);
-		dao.save(account);
-		
-		AccountDto accountDto=new AccountDto(account.getAccountId(),account.getInterestRate(),account.getBalance(),account.getDateOfOpening());
-		return accountDto;
-	}
 }
