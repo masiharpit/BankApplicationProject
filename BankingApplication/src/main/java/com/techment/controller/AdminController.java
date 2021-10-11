@@ -1,10 +1,18 @@
-package com.techment.Controller;
+package com.techment.controller;
 
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,61 +20,80 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techment.Entity.Admin;
-import com.techment.Service.IAdminService;
-import com.techment.dto.Admindto;
+import com.techment.dto.AdminDto;
+import com.techment.dto.BeneficiaryDto;
+import com.techment.entity.Admin;
+import com.techment.entity.Beneficiary;
+import com.techment.exception.IdNotFoundException;
+import com.techment.service.AdminService;
+
+@CrossOrigin
 @RestController
-@RequestMapping(value = "Admin")
+@RequestMapping("/adminController")
 public class AdminController {
 	
 	@Autowired
-	private IAdminService adminService;
+	private AdminService adminService;
 
-	// For Add/Insert admin data..
-		@PostMapping(name = "addAdmin")
-		public ResponseEntity<String> registerAdmin(@RequestBody Admindto admin) {
-
-			adminService.AddAdmin(admin);
-			return new ResponseEntity<String>("Admin Registered Successfully", HttpStatus.ACCEPTED);
+	@PutMapping("/update-admin/{id}")
+	public ResponseEntity<AdminDto> updateAdmin(@PathVariable("id") int id, @RequestBody AdminDto admin)
+			throws IdNotFoundException {
+		try {
+			AdminDto adminDto = adminService.findAdminById(id);
+			adminDto.setAdminName(admin.getAdminName());
+			adminDto.setAdminContact(admin.getAdminContact());
+			adminDto.setAdminEmailId(admin.getAdminEmailId());
+			return new ResponseEntity<AdminDto>(adminDto, HttpStatus.OK);
+		} catch (NoSuchElementException e) {
+			throw new IdNotFoundException("Id is not found for updating details!!!");
 
 		}
+	}
+	
+	
+	
+	//rest-controller api to fetch admin list
+	@GetMapping("/list-all-admins")
+	public List<AdminDto> adminList() {
+		return adminService.listAllAdmins();
+	}
+	
+	//rest controller to fetch admin by id
+	@GetMapping("/find-admin-by-Id/{id}")
+	public ResponseEntity<AdminDto> findAdmin(@PathVariable("id") long id) throws IdNotFoundException {
+		try {
+			AdminDto adminDto = adminService.findAdminById(id);
+			return new ResponseEntity<AdminDto>(adminDto, HttpStatus.OK);
 
-		// For ViewingAll AdminList By Specific Id
-		@GetMapping(value = "/ViewadminById/{id}")
-		public Admin getAdminById(@PathVariable long id) {
-			
-			Admin A = adminService.getAdminById(id);
-			return A;
+		} catch (NoSuchElementException e) {
+			throw new IdNotFoundException("Given Id is not in the db for fetching details...");
+		}
+
+	}
+	
+	
+	// build create admin RESTAPI to add admin...
+	@PostMapping("/add-admin")
+	public ResponseEntity<AdminDto> addAdmin(@RequestBody AdminDto adminDto){
 		
-			
+         return new ResponseEntity<AdminDto>(adminService.addAdmin(adminDto), HttpStatus.CREATED)  ;
+	}
+	
+	
+	@DeleteMapping("/delete-admin/{id}")
+	public boolean removeAdmin(@PathVariable("id") long id) throws IdNotFoundException {
+		try {
+			return adminService.removeAdmin(id);
+		} catch (NoSuchElementException e) {
+			throw new IdNotFoundException("Given Id is not in the db for deleting...");
 		}
 
-		// For DeleteAdmin details By Id
-		@DeleteMapping("/DeleteAdminById/{id}")
-		public String deleteAdminId(@PathVariable long id) {
-			try {
-		     adminService.deleteAdminById(id);
-		    return "Admin id Deleted";
-		    }catch (Exception e) {
-				return "this id not present ";
-			}
-			
-		}
+	}
+	
+	
 
-		// For Updating Use PUT method in the postman otherwise it will pop up the error
-		@PutMapping("/AdminUpdateById/{id}")
-		public String updateAdmin(@PathVariable long id, @RequestBody Admindto admin) throws Exception 
-		{
-
-			try {
-				return adminService.updateAdmin(id, admin);
-			} 
-			catch (Exception e) {
-		
-				throw new Exception("admin not found");
-			}
-
-		}
 }
