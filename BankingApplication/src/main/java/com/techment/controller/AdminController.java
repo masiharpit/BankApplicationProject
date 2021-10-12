@@ -40,14 +40,10 @@ public class AdminController {
 	private AdminService adminService;
 
 	@PutMapping("/update-admin/{id}")
-	public ResponseEntity<AdminDto> updateAdmin(@PathVariable("id") int id, @RequestBody AdminDto admin)
+	public ResponseEntity<AdminDto> updateAdmin(@PathVariable("id") int id, @RequestBody AdminDto adminDto)
 			throws IdNotFoundException {
 		try {
-			AdminDto adminDto = adminService.findAdminById(id);
-			adminDto.setAdminName(admin.getAdminName());
-			adminDto.setAdminContact(admin.getAdminContact());
-			adminDto.setAdminEmailId(admin.getAdminEmailId());
-			return new ResponseEntity<AdminDto>(adminDto, HttpStatus.OK);
+			return new ResponseEntity<AdminDto>(adminService.updateAdmin(adminDto,id), HttpStatus.OK);
 		} catch (NoSuchElementException e) {
 			throw new IdNotFoundException("Id is not found for updating details!!!");
 

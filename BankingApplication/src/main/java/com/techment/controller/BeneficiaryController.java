@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.techment.dao.BeneficiaryDao;
+import com.techment.dto.AdminDto;
 import com.techment.dto.BeneficiaryDto;
 import com.techment.entity.Beneficiary;
 import com.techment.exception.IdNotFoundException;
@@ -68,49 +69,23 @@ public class BeneficiaryController {
 	//////////////////////
 
 	@PutMapping("/update-beneficiary/{id}")
-	public ResponseEntity<String> updateBenefiaciary(@PathVariable("id") int id, @RequestBody Beneficiary beneficiary)
+	public ResponseEntity<BeneficiaryDto> updateBenefiaciary(@PathVariable("id") int id, @RequestBody BeneficiaryDto beneficiaryDto)
 			throws IdNotFoundException {
 		try {
-			BeneficiaryDto beneficiaryDto = service.findBeneficiaryById(id);
-			beneficiaryDto.setBeneficiaryName(beneficiary.getBeneficiaryName());
-			beneficiaryDto.setBeneficiaryAccNumber(beneficiary.getBeneficiaryAccNumber());
-			beneficiaryDto.setBeneficiaryIfsc(beneficiary.getBeneficiaryIfsc());
-			service.addNewBeneficiary(beneficiaryDto);
-			return new ResponseEntity<String>("Updated successfully", HttpStatus.OK);
+           return new ResponseEntity<BeneficiaryDto>(service.updateBenefiaciary(beneficiaryDto,id), HttpStatus.OK);
 		} catch (NoSuchElementException e) {
 			throw new IdNotFoundException("Id is not found for updating details!!!");
 
 		}
 	}
-
+	
+	
 	// build create beneficiary RESTAPI
 	@PostMapping("/add-beneficiary")
-	public ResponseEntity<String> addBenefiaciary(@Validated @RequestBody BeneficiaryDto beneficiaryDto,
-			BindingResult bindingResult) throws MethodArgumentNotValidException {
-		if (bindingResult.hasErrors()) {
-			List<FieldError> errors = bindingResult.getFieldErrors();
-			List<String> errorList = new ArrayList<String>();
+	public ResponseEntity<BeneficiaryDto> addBenefiaciary( @RequestBody BeneficiaryDto beneficiaryDto){
+	       return new ResponseEntity<BeneficiaryDto>(service.addNewBeneficiary(beneficiaryDto), HttpStatus.CREATED)  ;
+	   	}
 
-			for (FieldError f : errors) {
-				errorList.add(f.getDefaultMessage());
-			}
 
-			// throw new ValidationException(errorList);
-			throw new com.techment.exception.ValidationException(errorList);
-		}
-
-		service.addNewBeneficiary(beneficiaryDto);
-		return new ResponseEntity<String>("added new beneficiary", HttpStatus.OK);
-	}
-
-	
-	
-	
-	// build create beneficiary RESTAPI
-//		@PostMapping("/add-beneficiary")
-//		public ResponseEntity<Beneficiary> addBenefiaciary(@RequestBody @Validated Beneficiary beneficiary) {
-//			
-//			return new ResponseEntity<Beneficiary>(service.addNewBeneficiary(beneficiary), HttpStatus.CREATED);
-//		}
 
 }
