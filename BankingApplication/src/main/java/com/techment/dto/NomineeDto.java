@@ -1,5 +1,10 @@
 package com.techment.dto;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+import com.techment.enum_class.GovtIdType;
+import com.techment.enum_class.Relation;
 
 public class NomineeDto {
 	
@@ -8,12 +13,35 @@ public class NomineeDto {
 	
 	private String name;
 	private String govtId;
-	private enum govtIdType{AdharCard , PANCard};
-	
 	private String phoneNo;
-	private enum Relation{Father,Mother,Husband,Wife};
+	
+	@Enumerated(EnumType.ORDINAL)
+	private GovtIdType govtIdType;
+	
+	@Enumerated(EnumType.ORDINAL)
+	private  Relation relation;
 	
 	
+	public NomineeDto(int nomineeId, String name, String govtId, GovtIdType govtIdType, String phoneNo) {
+		super();
+		this.nomineeId = nomineeId;
+		this.name = name;
+		this.govtId = govtId;
+		this.govtIdType = govtIdType;
+		this.phoneNo = phoneNo;
+	}
+
+
+	public GovtIdType getGovtIdType() {
+		return govtIdType;
+	}
+
+
+	public void setGovtIdType(GovtIdType govtIdType) {
+		this.govtIdType = govtIdType;
+	}
+
+
 	public NomineeDto(int nomineeId, String name, String govtId, String phoneNo) {
 		super();
 		this.nomineeId = nomineeId;
@@ -52,6 +80,40 @@ public class NomineeDto {
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
+
+
+	public Relation getRelation() {
+		return relation;
+	}
+
+
+	public void setRelation(Relation relation) {
+		this.relation = relation;
+	}
+
+
+	public NomineeDto(int nomineeId, String name, String govtId, String phoneNo, GovtIdType govtIdType,
+			Relation relation) {
+		super();
+		this.nomineeId = nomineeId;
+		this.name = name;
+		this.govtId = govtId;
+		this.phoneNo = phoneNo;
+		this.govtIdType = govtIdType;
+		this.relation = relation;
+	}
+
+
+	@Override
+	public String toString() {
+		return "NomineeDto [nomineeId=" + nomineeId + ", name=" + name + ", govtId=" + govtId + ", phoneNo=" + phoneNo
+				+ ", govtIdType=" + govtIdType + ", relation=" + relation + "]";
+	}
+	
+	
+	
+	
+	
 	
 
 }
