@@ -15,21 +15,9 @@ import com.techment.exception.IdNotFoundException;
 @Service
 public interface IBeneficiaryService {
 
-    String addNewBeneficiary(BeneficiaryDto beneficiary) ;
-
-//	 Beneficiary updateBenefiaciary(Beneficiary beneficiary,int id) throws IdNotFoundException;
-
-	// boolean deleteBeneficiary(int id) throws IdNotFoundException;
-	
-//	 Beneficiary findBeneficiaryById1(int id) throws IdNotFoundException;
-
-//    List<Beneficiary> listAllBeneficiaries();
-    
-	 
-//	 BeneficiaryDto updateBenefiaciary(BeneficiaryDto beneficiary,int id);
-    
-//    BeneficiaryDto addNewBeneficiary(Beneficiary beneficiaryDto) ;
-	 BeneficiaryDto findBeneficiaryById(int id) ;
+    BeneficiaryDto addNewBeneficiary(BeneficiaryDto beneficiary) ;
+    BeneficiaryDto updateBenefiaciary(BeneficiaryDto beneficiary,int id);
+    BeneficiaryDto findBeneficiaryById(int id) ;
     List<BeneficiaryDto> listAllBeneficiaries();
     boolean deleteBeneficiary(int id) ;
     

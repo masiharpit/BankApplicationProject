@@ -1,36 +1,51 @@
-package com.techment.bank.service;
+package com.techment.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.techment.bank.dao.INomineeDao;
-import com.techment.bank.dto.NomineeDto;
-import com.techment.bank.entity.Nominee;
+import com.techment.dao.INomineeDao;
+import com.techment.dto.NomineeDto;
+import com.techment.entity.Nominee;
 
 @Service
 public class NomineeServiceImpl implements INomineeService{
 
 	@Autowired
 	private INomineeDao repository ;
-
-	@Override
-	public NomineeDto addNominee(NomineeDto nominee) {
-		  repository.save(nominee);
-		  return nominee ;
+	
+	@Autowired
+	public NomineeServiceImpl(INomineeDao repository) {
+		super();
+		this.repository = repository ;
 	}
 
+
 	@Override
-	public String updateNominee(int nomineeId, NomineeDto nominee) 
+	public NomineeDto addNominee(NomineeDto nomineeDto) {
+		Nominee nominee = new Nominee();
+		nominee.setNomineeId(nomineeDto.getNomineeId());
+		nominee.setName(nomineeDto.getName());
+		nominee.setGovtId(nomineeDto.getGovtId());
+		nominee.setPhoneNo(nomineeDto.getPhoneNo());
+		nominee.setGovtIdType(nomineeDto.getGovtIdType());
+		nominee.setRelation(nomineeDto.getRelation());
+		repository.save(nominee);
+		return nomineeDto ;
+	}
+
+	
+	@Override
+	public NomineeDto updateNominee(int nomineeId, NomineeDto nomineeDto) 
 	{
 		Nominee existingNominee = repository.findById(nomineeId).get();
-		existingNominee.setNomineeId(nominee.getNomineeId());
-		existingNominee.setName(nominee.getName());
-		existingNominee.setGovtId(nominee.getGovtId());
-		existingNominee.setPhoneNo(nominee.getPhoneNo());
+		existingNominee.setName(nomineeDto.getName());
+		existingNominee.setGovtId(nomineeDto.getGovtId());
+		existingNominee.setPhoneNo(nomineeDto.getPhoneNo());
+		existingNominee.setRelation(nomineeDto.getRelation());
 		repository.save(existingNominee);
-		return "updated" ;
+		return nomineeDto;
 	}
 
 	@Override

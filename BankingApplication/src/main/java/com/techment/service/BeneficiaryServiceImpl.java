@@ -11,15 +11,17 @@ import com.techment.dto.BeneficiaryDto;
 import com.techment.entity.Beneficiary;
 import com.techment.exception.IdNotFoundException;
 
-/*
- * Beneficiary Service
- * date : 05/01/2021
- */
+
 
 
 @Service
 public class BeneficiaryServiceImpl implements IBeneficiaryService{
-
+	/*
+	 * Beneficiary Service
+	 *  all service implementation of the beneficiary.
+	 */
+	
+	
 	 @Autowired
 	private BeneficiaryDao beneficiaryDao;
 	
@@ -32,37 +34,16 @@ public class BeneficiaryServiceImpl implements IBeneficiaryService{
      
      //service to add new beneficiary
      @Override
- 	public String addNewBeneficiary(BeneficiaryDto beneficiaryDto) {
+ 	public BeneficiaryDto addNewBeneficiary(BeneficiaryDto beneficiaryDto) {
  		Beneficiary beneficiary = new Beneficiary();
  		beneficiary.setBeneficiaryName(beneficiaryDto.getBeneficiaryName());
     	 beneficiary.setBeneficiaryAccNumber(beneficiaryDto.getBeneficiaryAccNumber());
     	 beneficiary.setBeneficiaryIfsc(beneficiaryDto.getBeneficiaryIfsc());
     	 beneficiaryDao.save(beneficiary);
- 		return "Beneficiary Added";
+ 		return beneficiaryDto;
  	}
-     
-     
-     
-//     @Override
-// 	public Beneficiary updateBenefiaciary(Beneficiary beneficiary, int id) throws IdNotFoundException {
-//
-// 		// check whether a employee exist in a DB or not
-//    	 Beneficiary existingBeneficiary = beneficiaryDao.findById(id).orElseThrow(
-//    		  ()-> new IdNotFoundException("Id "+id +" not found for updating  the details.."));
-//
-//      existingBeneficiary.setBeneficiaryName(beneficiary.getBeneficiaryName());
-//      existingBeneficiary.setBeneficiaryAccNumber(beneficiary.getBeneficiaryAccNumber());
-//      existingBeneficiary.setBeneficiaryIfsc(beneficiary.getBeneficiaryIfsc());
-//      
-//      beneficiaryDao.save(existingBeneficiary);
-//      return existingBeneficiary;
-// 	}
-	
 
-
-    
-    //////////--------------dto----------------///
-	@Override
+    @Override
 	public List<BeneficiaryDto> listAllBeneficiaries() {
        List<Beneficiary> beneficiaryList =	beneficiaryDao.findAll();
 		
@@ -103,45 +84,18 @@ public class BeneficiaryServiceImpl implements IBeneficiaryService{
 		} else
 			return false;
 	}
-    
-
-   
-/////--------with class
-//	@Override
-//	public List<Beneficiary> listAllBeneficiaries() {
-//		return beneficiaryDao.findAll();
-//	}
 
 
-//	@Override
-//	public Beneficiary findBeneficiaryById1(int id) throws IdNotFoundException {
-//
-//		return beneficiaryDao.findById(id).orElseThrow(() -> 
-//	           	new IdNotFoundException("Id not found to fetch the details.."));
-//	
-//	} 
+    //service implement to update beneficiary detail...
+	@Override
+	public BeneficiaryDto updateBenefiaciary(BeneficiaryDto beneficiaryDto,int bId) {
+		Beneficiary beneficiary = beneficiaryDao.findById(bId).get();
+		beneficiary.setBeneficiaryName(beneficiaryDto.getBeneficiaryName());
+		beneficiary.setBeneficiaryAccNumber(beneficiaryDto.getBeneficiaryAccNumber());
+		beneficiary.setBeneficiaryIfsc(beneficiaryDto.getBeneficiaryIfsc());
+		beneficiaryDao.save(beneficiary);
+		return beneficiaryDto;
+	}
 
-    //---------------- service for updating beneficiary details..------------------------
-//    @Override
-//  	public BeneficiaryDto updateBenefiaciary(BeneficiaryDto beneficiaryDto, int id){
-//
-//    	Beneficiary beneficiary = beneficiaryDao.findById(id).get();
-//    	BeneficiaryDto existingBeneficiary=beneficiaryDao.findById(id).get();
-//  		// check whether a employee exist in a DB or not
-//     	 BeneficiaryDto existingBeneficiary = beneficiaryDao.findById(id).orElseThrow(
-//     		  ()-> new IdNotFoundException("Id "+id +" not found for updating  the details.."));
-//
-//       existingBeneficiary.setBeneficiaryName(beneficiary.getBeneficiaryName());
-//       existingBeneficiary.setBeneficiaryAccNumber(beneficiary.getBeneficiaryAccNumber());
-//       existingBeneficiary.setBeneficiaryIfsc(beneficiary.getBeneficiaryIfsc());
-//       
-//       beneficiaryDao.save(existingBeneficiary);
-//       return existingBeneficiary;
-//  	}
-//    
-//	
-	
-	
-	
 	
 }
