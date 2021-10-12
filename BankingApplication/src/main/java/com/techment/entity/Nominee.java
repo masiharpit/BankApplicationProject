@@ -1,36 +1,34 @@
 package com.techment.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="nominee5")
+import com.techment.enum_class.GovtIdType;
+import com.techment.enum_class.Relation;
 
+@Entity
+@Table(name="nominee")
 public class Nominee {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
-
-	private int nomineeId;
+    private int nomineeId;
 	private String name;
 	private String govtId;
-	private enum govtIdType{AdharCard , PANCard};
-	private String phoneNo;
-	private enum Relation{Father,Mother,Husband,Wife};
+    private String phoneNo;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name = "accountId")
-	private Account account;
-
+	@Enumerated(EnumType.ORDINAL)
+	private Relation relation;
 	
+	@Enumerated(EnumType.ORDINAL)
+	private GovtIdType govtIdType;
+	
+    
 	public Nominee() {
 		super();
 	}
@@ -70,6 +68,36 @@ public class Nominee {
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
+
+	public GovtIdType getGovtIdType() {
+		return govtIdType;
+	}
+
+	public void setGovtIdType(GovtIdType govtIdType) {
+		this.govtIdType = govtIdType;
+	}
 		
+
+
+	public Relation getRelation() {
+		return relation;
+	}
+
+	public void setRelation(Relation relation) {
+		this.relation = relation;
+	}
+
+	public Nominee(int nomineeId, String name, String govtId, String phoneNo, Relation relation,
+			GovtIdType govtIdType) {
+		super();
+		this.nomineeId = nomineeId;
+		this.name = name;
+		this.govtId = govtId;
+		this.phoneNo = phoneNo;
+		this.relation = relation;
+		this.govtIdType = govtIdType;
+	}
+	
+	
 
 }
