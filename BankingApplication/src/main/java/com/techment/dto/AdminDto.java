@@ -1,12 +1,20 @@
 package com.techment.dto;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+
+import com.techment.entity.Branch;
+
 public class AdminDto {
 	
 	 private long adminId;
 	private String adminName;
 	private String adminContact;
 	private String adminEmailId;
-	 
+	private Branch branch;
+	
+
 	 public AdminDto() {
 		super();
 	}
@@ -60,9 +68,28 @@ public void setAdminName(String adminName) {
 		this.adminEmailId = adminEmailId;
 	}
 
+	
+	
+	
 
+	public Branch getBranch() {
+		return branch;
+	}
 
+	public void setBranch(Branch branch) {
+		this.branch = branch;
+	}
+	
+	
 
+	public AdminDto(long adminId, String adminName, String adminContact, String adminEmailId, Branch branch) {
+		super();
+		this.adminId = adminId;
+		this.adminName = adminName;
+		this.adminContact = adminContact;
+		this.adminEmailId = adminEmailId;
+		this.branch = branch;
+	}
 
 	public AdminDto(long adminId, String adminName, String adminContact, String adminEmailId) {
 		super();
@@ -71,7 +98,10 @@ public void setAdminName(String adminName) {
 		this.adminContact = adminContact;
 		this.adminEmailId = adminEmailId;
 	}
-	
+
+
+
+
 	
 	
 	
