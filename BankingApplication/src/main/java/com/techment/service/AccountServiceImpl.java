@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techment.dao.AccountDao;
+import com.techment.dao.ICustomerDao;
 import com.techment.dao.ITransactionDao;
 import com.techment.dto.AccountDto;
+import com.techment.dto.CustomerDto;
 import com.techment.dto.TransactionDto;
 import com.techment.entity.Account;
+import com.techment.entity.Customer;
+import com.techment.entity.Transaction;
 
 @Service
 public class AccountServiceImpl implements IAccountService{
@@ -18,7 +22,11 @@ public class AccountServiceImpl implements IAccountService{
 	@Autowired
 	AccountDao Accountdao;
 	
+	@Autowired
 	ITransactionDao transactionDao;
+	
+	@Autowired
+	ICustomerDao customerDao;
 	
 	@Override
 	public TransactionDto transferMoney(long senderAccountId, long receiverAccountId, double amount, String username,
@@ -28,6 +36,7 @@ public class AccountServiceImpl implements IAccountService{
 		Account receiveraccount=Accountdao.findByAccountId(receiverAccountId);
 		TransactionDto transactionDto = new TransactionDto();
 		LocalDate transactionDateAndTime = null;
+		Transaction transaction =new Transaction();
 		
 		if(senderaccount.getBalance()>=amount) 
 		{
@@ -42,7 +51,6 @@ public class AccountServiceImpl implements IAccountService{
 		transactionDto.setTransactionDateAndTime(transactionDateAndTime.now());
 		transactionDto.setBankAccount(receiveraccount);
 		transactionDto.setTransactionRemarks("Successfully Transfered");
-		
 		}
 		
 		else {
@@ -52,11 +60,10 @@ public class AccountServiceImpl implements IAccountService{
 			transactionDto.setTransactionDateAndTime(transactionDateAndTime.now());
 			transactionDto.setBankAccount(receiveraccount);
 			transactionDto.setTransactionRemarks("Failed transaction");
-			
 		}
-		
 		return transactionDto;
 	}
+	
 	@Override
 	public TransactionDto withdraw(long accountId, String username, String password, double amount) {
 		
@@ -83,9 +90,7 @@ public class AccountServiceImpl implements IAccountService{
 			transactionDto.setTransactionDateAndTime(transactionDateAndTime.now());
 			transactionDto.setBankAccount(account);
 			transactionDto.setTransactionRemarks("Failed transaction");
-			
 		}
-		
 		return transactionDto;
 	}
 	
@@ -111,8 +116,35 @@ public class AccountServiceImpl implements IAccountService{
 	@Override
 	public AccountDto findAccountById(long accountId) {
 		Account account = Accountdao.findByAccountId(accountId);
-		AccountDto accountDto=new AccountDto(account.getAccountId(),account.getInterestRate(),account.getBalance(),account.getDateOfOpening());
+		AccountDto accountDto=new AccountDto(account.getAccountId(),account.getBalance());
 		return accountDto;
 	}
 	
+	@Override
+	public AccountDto addAccount(AccountDto accountDto, long customerId) {
+		Account account =new Account();
+		LocalDate AccountOpeningDate = null;
+		
+		account.setAccountId(accountDto.getAccountId());
+		account.setBalance(accountDto.getBalance());
+		account.setDateOfOpening(AccountOpeningDate.now());
+		account.setInterestRate(12);
+		account.setAccountType(accountDto.getAccountType());
+		
+		Customer customer =customerDao.findByCustomerId(customerId);
+		
+		account.setCustomer(customer);
+		Accountdao.save(account);
+		return accountDto;
+	}
+	
+	@Override
+	public AccountDto updateAccount(AccountDto accountDto) {
+		return null;
+	}
+	
+	@Override
+	public AccountDto deleteAccount(long accountId) {
+		return null;
+	}
 }
