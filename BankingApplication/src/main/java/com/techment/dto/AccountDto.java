@@ -1,26 +1,37 @@
 package com.techment.dto;
 
-import java.time.LocalDate;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+import com.techment.enumClass.AccountType;
+import com.techment.entity.Customer;
 
 public class AccountDto {
 	
 	long accountId;
-	double interestRate;
 	double balance;
-	LocalDate dateOfOpening;
+	AccountType accountType;
 	
 	
+
+	@Enumerated(EnumType.ORDINAL)
+	public AccountType getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(AccountType accountType) {
+		this.accountType = accountType;
+	}
 	
 	public AccountDto() {
 		super();
 	}
 
-	public AccountDto(long accountId, double interestRate, double balance, LocalDate dateOfOpening) {
+	public AccountDto(long accountId, double balance) {
 		super();
 		this.accountId = accountId;
-		this.interestRate = interestRate;
 		this.balance = balance;
-		this.dateOfOpening = dateOfOpening;
+		
 	}
 
 	public long getAccountId() {
@@ -31,14 +42,6 @@ public class AccountDto {
 		this.accountId = accountId;
 	}
 
-	public double getInterestRate() {
-		return interestRate;
-	}
-
-	public void setInterestRate(double interestRate) {
-		this.interestRate = interestRate;
-	}
-
 	public double getBalance() {
 		return balance;
 	}
@@ -47,12 +50,6 @@ public class AccountDto {
 		this.balance = balance;
 	}
 
-	public LocalDate getDateOfOpening() {
-		return dateOfOpening;
-	}
-
-	public void setDateOfOpening(LocalDate dateOfOpening) {
-		this.dateOfOpening = dateOfOpening;
-	}
-
+	
+	
 }
